@@ -1,0 +1,17 @@
+.wrangler/
+.vscode/
+node_modules/
+.env
+.env.*
+*.log
+*.tmp
+*.zip
+cloudflare-pages-ready/
+test-results/
+playwright-report/
+
+# Test artifacts
+logs/
+coverage/
+.nyc_output/
+test-results/
