@@ -29,14 +29,14 @@ module.exports = async function verifyAdventure(browser, baseURL = "http://local
       return { active: step.active, near: game.near?.type, prompt: document.querySelector("#interaction-prompt span").textContent, operations: operations.map(call => call.key), owned };
     }, index);
     assert(marker.active && marker.near === "task", `${key}: use location is not an active task`);
-    assert(marker.prompt === "USE TOOL HERE · استخدم الأداة هنا", `${key}: use location prompt looks like a pickup`);
+    assert(marker.prompt === "استخدم الأداة هنا", `${key}: use location prompt looks like a pickup`);
     assert(marker.operations.includes("arc") && marker.operations.includes("setLineDash"), `${key}: glowing use marker is missing`);
     assert(!marker.operations.some(operation => ["fillRect", "strokeRect", "fillText", "ellipse", "quadraticCurveTo", "drawImage"].includes(operation)), `${key}: use marker contains physical tool art`);
     assert(marker.owned === 1, `${key}: equipped tool is not stored exactly once before use`);
     await page.keyboard.press("e");
     assert(await page.locator(".tool-science").isVisible(), `${key}: tool explanation did not open`);
     assert(!await page.evaluate(key => game.state.missionSteps.includes(key), key), `${key}: task auto-completed before the action`);
-    assert((await page.locator(".tool-science").innerText()).includes("إيه دي؟") && (await page.locator(".tool-science").innerText()).includes("هستخدمها إزاي؟"), `${key}: tool purpose or usage is missing`);
+    assert((await page.locator(".tool-science").innerText()).includes("بتعمل إيه؟") && (await page.locator(".tool-science").innerText()).includes("هستخدمها إزاي؟"), `${key}: tool purpose or usage is missing`);
     await page.locator("#use-mission-tool").click();
     await page.waitForFunction(key => game.cinematic?.type === "tool" && game.cinematic.key === key, key);
     await page.waitForFunction(key => {
@@ -186,7 +186,7 @@ module.exports = async function verifyAdventure(browser, baseURL = "http://local
         const renderedConversation = renderedTurns.join(" ");
         assert(/كتلتك.*وزنك أقل/.test(renderedConversation), "Moon gravity explanation was skipped");
         assert(/حلقاته السبع.*ناحية المريخ/.test(renderedConversation), "Moon ring-mission guidance was skipped");
-        assert(/مغرفة العينات.*حاوية العينات.*الحقيبة.*اضغط E/.test(renderedConversation), "Moon tool guidance was skipped");
+        assert(/مغرفة التراب.*علبة العينات.*الشنطة.*اضغط E/.test(renderedConversation), "Moon tool guidance was skipped");
       }
       while (await page.evaluate(() => Boolean(game.dialogue))) await advance();
       if (id === "moon") {
@@ -218,7 +218,7 @@ module.exports = async function verifyAdventure(browser, baseURL = "http://local
       if (id === "mercury") {
         await equip("camera"); await move("task", 0); await page.keyboard.press("e");
         assert(await page.locator("#backpack-btn").evaluate(element => element.classList.contains("tool-needed")), "Mercury wrong-tool guidance did not highlight the backpack");
-        assert((await page.locator("#toast").innerText()).includes("مسبار حرارة"), "Mercury wrong-tool guidance did not name the probe");
+        assert((await page.locator("#toast").innerText()).includes("جهاز قياس الحرارة"), "Mercury wrong-tool guidance did not name the temperature tool");
       }
       for (let index = 0; index < tools.length; index++) {
         await equip(tools[index]); await useTask(index);
@@ -227,7 +227,7 @@ module.exports = async function verifyAdventure(browser, baseURL = "http://local
       if (sampleNames[id]) {
         await page.locator("#backpack-btn").click();
         const sample = await page.locator(".sample-row").filter({ hasText: sampleNames[id] }).innerText();
-        assert(sample.includes("محفوظة ومثبت عليها بطاقة"), `${id}: sample is not sealed and labeled in the backpack`);
+        assert(sample.includes("محفوظة وعليها بطاقة"), `${id}: sample is not sealed and labeled in the backpack`);
         await page.keyboard.press("Escape");
       }
       await equip("camera"); await move("science"); await page.keyboard.press("e");

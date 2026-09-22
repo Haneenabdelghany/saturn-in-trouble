@@ -253,7 +253,7 @@ test("every field task explains its subject, action, result and meaning", () => 
   }
   assert.equal(TASK_SCIENCE["venus:0"].sample, "شظية بركانية");
   const venusTasks = makeGame("venus").world.steps.map(step => step.label).join(" ");
-  assert.match(venusTasks, /شظية|الحاوية/);
+  assert.match(venusTasks, /قطعة|علبة العينات/);
   assert.doesNotMatch(venusTasks, /المسبار/);
 });
 
@@ -1001,7 +1001,7 @@ test("Uranus playable terrain is solid irregular ice shared by rendering and col
 
 test("backpack equipped feedback is persistent and emitted only for the active tool", () => {
   assert.match(source, /const equipped=state\.equipped===id/);
-  assert.match(source, /equipped\?'<span class="equipped-indicator">✓ EQUIPPED<\/span>':""/);
+  assert.match(source, /equipped\?'<span class="equipped-indicator">✓ مستخدمة<\/span>':""/);
   assert.match(advancedStyleSource, /\.inventory-slot\.equipped\{border:2px solid var\(--amber\)/);
   assert.match(advancedStyleSource, /\.inventory-slot \.equipped-indicator\{/);
   assert.match(advancedStyleSource, /\.inventory-slot:not\(\.empty\):hover,\.inventory-slot:not\(\.empty\):focus-visible/);
@@ -1162,13 +1162,13 @@ test("Moon teaches gravity before connecting Saturn's rings and real field tools
   assert.match(lines[2].text, /كتلتك.*وزنك أقل.*جاذبيتي الأضعف.*تنط أعلى/);
   assert.match(lines[3].text, /زحل.*حلقاته السبع/);
   assert.match(lines[4].text, /مفيش حلقة.*القمر.*ناحية المريخ/);
-  assert.match(lines[6].text, /مغرفة العينات.*حاوية العينات.*الحقيبة.*علامة العمل.*E/);
+  assert.match(lines[6].text, /مغرفة التراب.*علبة العينات.*الشنطة.*علامة العمل.*E/);
   assert.equal(PLANETS.moon.hasRing, false);
   assert.equal(PLANETS.moon.tool, "scoop");
   assert.equal(MISSIONS.moon.steps.map(step => step[3]).join(), "scoop,sampleContainer");
   assert.equal(MISSIONS.moon.kit.map(item => item[0]).join(), "sampleContainer");
-  assert.equal(ITEMS.scoop.name, "مغرفة عينات");
-  assert.equal(ITEMS.sampleContainer.name, "حاوية عينات");
+  assert.equal(ITEMS.scoop.name, "مغرفة التراب");
+  assert.equal(ITEMS.sampleContainer.name, "علبة العينات");
 
   const game = makeGame("moon"), visitedTurns = [];
   game.state.observations.push("moon");
@@ -1189,13 +1189,13 @@ test("Moon teaches gravity before connecting Saturn's rings and real field tools
 
 test("ring planets give locations while their rings own the science facts", () => {
   const ringPlanets=ORDER.filter(id => PLANETS[id].hasRing),scripts=new Set(),ownership={
-    mercury:{guidance:/مسبار الحرارة.*الصخر المشمس.*داخل الظل/,science:[/أصغر كوكب/,/88/,/جليد ماء/],forbidden:/أصغر كوكب|88|غلافه الجوي شبه منعدم|جليد ماء/},
-    venus:{guidance:/المطرقة الجيولوجية.*الملاقط.*حاوية العينات.*ثلاث ضربات.*الملاقط.*أغلق الحاوية.*بطاقة/,science:[/ثاني أكسيد الكربون/,/470/,/92/,/ألف بركان/,/11 كيلومتر/],forbidden:/ثاني أكسيد الكربون|470|92|ألف بركان|11 كيلومتر/},
-    earth:{guidance:/مستشعر الصوت المائي.*اغوص.*قارن قوة النبضات/,science:[/71%/,/ماء سائل/,/موطنًا للحياة/,/غلافها الجوي/],forbidden:/71%|ماء سائل|موطنًا للحياة|غلافها الجوي/},
-    mars:{guidance:/مثقاب العينات.*استخرج قلبًا.*أغلق الأنبوب.*بطاقة/,science:[/أوليمبوس مونس/,/مياه سائلة قديمة/,/الحديد/,/اتأكسدت/,/ثاني أكسيد الكربون/,/الحرارة تتغير بشدة/,/فوبوس/,/ديموس/,/سول/,/24\.6/],forbidden:/مياه سائلة قديمة|معادن.*الحديد|اتأكسدت|أوليمبوس مونس|ثاني أكسيد الكربون|الحرارة تتغير بشدة|فوبوس|ديموس|سول|24\.6/},
-    jupiter:{guidance:/كاشف الإشعاع.*المسبار الأول.*قارن القراءة/,science:[/البقعة الحمراء/,/أكبر كواكب/,/عشر ساعات/],forbidden:/البقعة الحمراء|أكبر كواكب|عشر ساعات|عملاق غازي/},
-    uranus:{guidance:/حاسوب الملاحة.*المنارات.*ثبّت المسار/,science:[/عملاق جليدي/,/98 درجة/,/21 سنة/],forbidden:/عملاق جليدي|98 درجة|21 سنة/},
-    neptune:{guidance:/المصباح.*تدفئة الأجهزة/,science:[/أسرع الرياح/,/2000 كيلومتر/,/الميثان/,/165 سنة/],forbidden:/رياح|2000 كيلومتر|الميثان|165 سنة|أبعد كوكب/}
+    mercury:{guidance:/جهاز قياس الحرارة.*الصخر المشمس.*جوه الظل/,science:[/أصغر كوكب/,/88/,/جليد ماء/],forbidden:/أصغر كوكب|88|غلافه الجوي شبه منعدم|جليد ماء/},
+    venus:{guidance:/مطرقة الصخور.*ملقاط العينات.*علبة العينات.*ثلاث ضربات.*ملقاط العينات.*اقفل علبة العينات.*بطاقة/,science:[/ثاني أكسيد الكربون/,/470/,/92/,/ألف بركان/,/11 كيلومتر/],forbidden:/ثاني أكسيد الكربون|470|92|ألف بركان|11 كيلومتر/},
+    earth:{guidance:/جهاز سماع الإشارات.*اغوص.*قارن قوة الإشارات/,science:[/71%/,/ماء سائل/,/موطنًا للحياة/,/غلافها الجوي/],forbidden:/71%|ماء سائل|موطنًا للحياة|غلافها الجوي/},
+    mars:{guidance:/مثقاب الصخور.*طلّع عينة صغيرة.*أغلق الأنبوب.*بطاقة/,science:[/أوليمبوس مونس/,/مياه سائلة قديمة/,/الحديد/,/اتأكسدت/,/ثاني أكسيد الكربون/,/الحرارة تتغير بشدة/,/فوبوس/,/ديموس/,/سول/,/24\.6/],forbidden:/مياه سائلة قديمة|معادن.*الحديد|اتأكسدت|أوليمبوس مونس|ثاني أكسيد الكربون|الحرارة تتغير بشدة|فوبوس|ديموس|سول|24\.6/},
+    jupiter:{guidance:/جهاز قياس الإشعاع.*محطة الرصد الأولى.*قارن الرقم/,science:[/البقعة الحمراء/,/أكبر كواكب/,/عشر ساعات/],forbidden:/البقعة الحمراء|أكبر كواكب|عشر ساعات|عملاق غازي/},
+    uranus:{guidance:/جهاز تحديد الاتجاه.*المنارات.*ثبّت مسارك/,science:[/عملاق جليدي/,/98 درجة/,/21 سنة/],forbidden:/عملاق جليدي|98 درجة|21 سنة/},
+    neptune:{guidance:/الكشاف.*الأجهزة دافية/,science:[/أسرع الرياح/,/2000 كيلومتر/,/الميثان/,/165 سنة/],forbidden:/رياح|2000 كيلومتر|الميثان|165 سنة|أبعد كوكب/}
   };
   assert.equal(ringPlanets.length,7);
   assert.deepEqual([...ringPlanets],["mercury","venus","earth","mars","jupiter","uranus","neptune"]);
@@ -1298,7 +1298,7 @@ test("Mercury combines cratered airless geology, polar ice evidence and thermal 
   const planetDialogue=PLANET_DIALOGUES.mercury.filter(line=>!line.astronaut).map(line=>line.text).join(" "),ringDialogue=RING_DIALOGUES.mercury.filter(line=>line.speaker==="ring").map(line=>line.text).join(" ");
   assert.match(source,/drawMercuryHorizon\(ctx,camera,canvas\)/);
   assert.match(source,/const polarX=2540/);
-  assert.match(planetDialogue,/مسبار الحرارة/);
+  assert.match(planetDialogue,/جهاز قياس الحرارة/);
   assert.doesNotMatch(planetDialogue,/أصغر كوكب|غلافه الجوي شبه منعدم|جليد ماء/);
   assert.match(ringDialogue,/أصغر كوكب/);
   assert.match(ringDialogue,/غلافه الجوي شبه منعدم/);
@@ -1318,7 +1318,7 @@ test("Venus diffuses its Sun while Mercury keeps the hard solar core", () => {
 
 test("Venus combines slow dense air, volcanic geology and distinct science", () => {
   const planetDialogue=PLANET_DIALOGUES.venus.filter(line=>!line.astronaut).map(line=>line.text).join(" "),ringDialogue=RING_DIALOGUES.venus.filter(line=>line.speaker==="ring").map(line=>line.text).join(" "),profile=ATMOSPHERE_PROFILES.venus,audio=AUDIO_PROFILES.venus;
-  assert.match(planetDialogue,/حاوية العينات/);
+  assert.match(planetDialogue,/علبة العينات/);
   assert.doesNotMatch(planetDialogue,/ثاني أكسيد الكربون|470|92|ألف بركان|11 كيلومتر/);
   assert.match(ringDialogue,/ثاني أكسيد الكربون/);
   assert.match(ringDialogue,/92/);
@@ -1529,12 +1529,12 @@ test("physical pickups, abstract use markers and held tools stay visually distin
   Object.assign(promptGame.player, { x: promptStep.x, y: promptStep.y });
   promptGame.detectNearby();
   assert.equal(promptGame.near.type, "task");
-  assert.equal(element("span").textContent, "USE TOOL HERE · استخدم الأداة هنا");
+  assert.equal(element("span").textContent, "استخدم الأداة هنا");
   promptGame.world.tool.active = true; promptStep.active = false;
   Object.assign(promptGame.player, { x: promptGame.world.tool.x, y: promptGame.world.tool.y });
   promptGame.detectNearby();
   assert.equal(promptGame.near.type, "tool");
-  assert.equal(element("span").textContent, "التقط الأداة");
+  assert.equal(element("span").textContent, "خد الأداة");
 });
 
 test("wrong tools identify and visually request the required equipment", () => {
@@ -1555,13 +1555,13 @@ test("sample records and field reports expose each physical stage", () => {
   game.state.missionSteps = ["venus:0"];
   ui.backpack();
   assert.match(ui.content.innerHTML, /شظية بركانية/);
-  assert.match(ui.content.innerHTML, /مكشوفة في الموقع/);
+  assert.match(ui.content.innerHTML, /موجودة في الموقع/);
   game.state.missionSteps.push("venus:1");
   ui.backpack();
-  assert.match(ui.content.innerHTML, /داخل الحاوية/);
+  assert.match(ui.content.innerHTML, /جوه العلبة/);
   game.state.missionSteps.push("venus:2");
   ui.backpack();
-  assert.match(ui.content.innerHTML, /محفوظة ومثبت عليها بطاقة/);
+  assert.match(ui.content.innerHTML, /محفوظة وعليها بطاقة/);
   ui.toolResult(game.world.steps[2], TASK_SCIENCE["venus:2"]);
   assert.match(ui.content.innerHTML, /WHAT I DID/);
   assert.match(ui.content.innerHTML, /WHAT I FOUND/);
@@ -1574,13 +1574,13 @@ test("Moon fieldwork stays active before the Mars departure clue", () => {
   game.state.observations.push("moon");
   game.state.conversations.push("moon");
   game.state.explored.push("moon");
-  assert.equal(game.missionStatus().code, "EQUIPMENT");
+  assert.equal(game.missionStatus().code, "الأداة المطلوبة");
   game.inventory.acquire("scoop");
   assert.equal(game.missionStatus().code, "LUNAR REGOLITH SAMPLE");
   game.state.missionSteps.push("moon:0");
-  assert.equal(game.missionStatus().code, "EQUIPMENT");
+  assert.equal(game.missionStatus().code, "الأداة المطلوبة");
   game.inventory.acquire("sampleContainer");
-  assert.match(game.missionStatus().text, /أغلق الحاوية/);
+  assert.match(game.missionStatus().text, /حط العينة في العلبة واقفلها/);
   game.state.missionSteps.push("moon:1");
   assert.equal(game.missionStatus().code, "FOLLOW THE RING → MARS");
 });
