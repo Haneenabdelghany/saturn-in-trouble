@@ -4,7 +4,8 @@ An educational space exploration game for children. This bilingual Canvas advent
 left Saturn. The seven characters are a storytelling choice, not an astronomical
 claim about the number of physical rings.
 
-Play the production release at https://saturn-in-trouble.pages.dev/.
+Play the production release at
+https://haneenabdelghany.github.io/saturn-in-trouble/.
 
 ## Play
 
